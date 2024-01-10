@@ -74,7 +74,7 @@ def crawl(url, nitems=1):
         crawl_provider(provider, nitems=nitems)
 
 
-def parse_args(args):
+def parse_args(args, log_file=None):
     desc = 'STAC API to Static Catalog Utility'
     dhf = argparse.ArgumentDefaultsHelpFormatter
     parser0 = argparse.ArgumentParser(description=desc)
