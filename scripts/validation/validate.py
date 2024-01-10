@@ -20,6 +20,8 @@ def validate(obj):
     if not validator.valid:
         self_link = [l['href'] for l in obj['links'] if l['rel'] == 'self'][0]
         print(f"INVALID {self_link}: {validator.message[-1]['error_message']}")
+        print(f'Error message: {validator.message[-1]}')
+        print(f'URL: {self_link}')
     return validator.valid
 
 
@@ -59,6 +61,10 @@ def crawl_provider(url, nitems=1):
 
 def read_json(url):
     resp = requests.get(url).json()
+    args = parse_args(sys.argv[1:])
+
+    url = args.pop('url')
+    crawl(url, **args)
 
 
 # crawl from root catalog
@@ -68,7 +74,7 @@ def crawl(url, nitems=1):
         crawl_provider(provider, nitems=nitems)
 
 
-def parse_args(args):
+def parse_args(args, log_file=None):
     desc = 'STAC API to Static Catalog Utility'
     dhf = argparse.ArgumentDefaultsHelpFormatter
     parser0 = argparse.ArgumentParser(description=desc)
