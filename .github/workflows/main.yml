@@ -1,0 +1,45 @@
+const yaml = require('yaml');
+const fs = require('fs');
+
+// Read the contents of package.json
+const packageJson = fs.readFileSync('package.json', 'utf8');
+const packageData = JSON.parse(packageJson);
+
+// Extract the scripts from package.json
+const scripts = packageData.scripts;
+
+// Define the GitHub Actions workflow
+const workflow = {
+  name: 'GitHub Actions Workflow',
+  on: {
+    push: {},
+    pull_request: {},
+  },
+  jobs: {
+    build: {
+      runs-on: 'ubuntu-latest',
+      steps: [
+        {
+          name: 'Checkout code',
+          uses: 'actions/checkout@v2',
+        },
+        {
+          name: 'Install dependencies',
+          run: 'npm ci',
+        },
+        // Add more steps for each script in the package.json
+        // For example:
+        {
+          name: 'Run tests',
+          run: scripts.test,
+        },
+      ],
+    },
+  },
+};
+
+// Generate the YAML content for the workflow
+const workflowYaml = yaml.stringify(workflow);
+
+// Write the YAML content to the .github/workflows/main.yml file
+fs.writeFileSync('.github/workflows/main.yml', workflowYaml);
