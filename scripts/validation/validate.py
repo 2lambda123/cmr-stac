@@ -20,6 +20,8 @@ def validate(obj):
     if not validator.valid:
         self_link = [l['href'] for l in obj['links'] if l['rel'] == 'self'][0]
         print(f"INVALID {self_link}: {validator.message[-1]['error_message']}")
+        print(f'Error message: {validator.message[-1]}')
+        print(f'URL: {self_link}')
     return validator.valid
 
 
