@@ -59,6 +59,10 @@ def crawl_provider(url, nitems=1):
 
 def read_json(url):
     resp = requests.get(url).json()
+    args = parse_args(sys.argv[1:])
+
+    url = args.pop('url')
+    crawl(url, **args)
 
 
 # crawl from root catalog
